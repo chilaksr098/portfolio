@@ -1431,3 +1431,30 @@ html, body {
   left: 0;
   top: 0;
 }
+
+/* --- Download Resume Button Animation --- */
+.btn.secondary-btn[download],
+.btn.secondary-btn.download-resume-btn {
+  position: relative;
+  animation: resumePulse 2s infinite alternate;
+  box-shadow: 0 0 16px 2px var(--color-accent, #00ff88), 0 0 32px 4px rgba(0,255,136,0.15);
+  z-index: 1;
+}
+
+@keyframes resumePulse {
+  0% {
+    box-shadow: 0 0 16px 2px var(--color-accent, #00ff88), 0 0 32px 4px rgba(0,255,136,0.15);
+    filter: brightness(1);
+  }
+  100% {
+    box-shadow: 0 0 32px 8px var(--color-accent, #00ff88), 0 0 64px 16px rgba(0,255,136,0.25);
+    filter: brightness(1.15);
+  }
+}
+
+.btn.secondary-btn[download]:hover,
+.btn.secondary-btn.download-resume-btn:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 48px 12px var(--color-accent, #00ff88), 0 0 96px 32px rgba(0,255,136,0.3);
+  filter: brightness(1.2);
+}
