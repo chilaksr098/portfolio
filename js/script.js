@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
   initFormEffects();
   initSkillsOrbit();
   initMatrixRain();
+  initColorPlayground(); // Add this line
 });
 
 // ===== CUSTOM CURSOR SYSTEM =====
@@ -191,14 +192,14 @@ function initHeroBlob() {
     }
 
     getColor(time) {
-      // Animate color smoothly over time (neon green, cyan, blue)
+      // Animate color smoothly over time (blue, purple, violet)
       const t = (time / 2000 + this.colorSeed) % 1;
-      // Interpolate between green (120), cyan (180), blue (220)
+      // Interpolate between blue (240), purple (280), violet (320)
       let hue;
       if (t < 0.5) {
-        hue = 120 + (180 - 120) * (t / 0.5); // green to cyan
+        hue = 240 + (280 - 240) * (t / 0.5); // blue to purple
       } else {
-        hue = 180 + (220 - 180) * ((t - 0.5) / 0.5); // cyan to blue
+        hue = 280 + (320 - 280) * ((t - 0.5) / 0.5); // purple to violet
       }
       return `hsla(${hue}, 100%, 60%, ${this.opacity})`;
     }
@@ -210,15 +211,15 @@ function initHeroBlob() {
           const prev = this.trail[i - 1];
           const curr = this.trail[i];
           const alpha = i / this.trail.length * this.opacity;
-          // Rainbow color for trail
-          const t = (curr.time / 2000 + curr.colorSeed) % 1;
-          let hue;
-          if (t < 0.5) {
-            hue = 120 + (180 - 120) * (t / 0.5);
-          } else {
-            hue = 180 + (220 - 180) * ((t - 0.5) / 0.5);
-          }
-          ctx.strokeStyle = `hsla(${hue}, 100%, 60%, ${alpha * 0.7})`;
+                // Rainbow color for trail
+      const t = (curr.time / 2000 + curr.colorSeed) % 1;
+      let hue;
+      if (t < 0.5) {
+        hue = 240 + (280 - 240) * (t / 0.5); // Blue to purple
+      } else {
+        hue = 280 + (320 - 280) * ((t - 0.5) / 0.5); // Purple to violet
+      }
+      ctx.strokeStyle = `hsla(${hue}, 100%, 60%, ${alpha * 0.7})`;
           ctx.lineWidth = curr.size * alpha * 1.5;
           ctx.beginPath();
           ctx.moveTo(prev.x, prev.y);
@@ -307,7 +308,7 @@ function initHeroBlob() {
         
         if (distance < 120) {
           const opacity = (120 - distance) / 120;
-          ctx.strokeStyle = `rgba(0, 255, 136, ${opacity * 0.6})`;
+          ctx.strokeStyle = `rgba(99, 102, 241, ${opacity * 0.6})`;
           ctx.lineWidth = opacity * 2;
           ctx.beginPath();
           ctx.moveTo(particles[i].x, particles[i].y);
@@ -324,7 +325,7 @@ function initHeroBlob() {
         
         if (distance < 100) {
           const opacity = (100 - distance) / 100;
-          ctx.strokeStyle = `rgba(255, 107, 53, ${opacity * 0.8})`;
+          ctx.strokeStyle = `rgba(139, 92, 246, ${opacity * 0.8})`;
           ctx.lineWidth = opacity * 3;
           ctx.beginPath();
           ctx.moveTo(particles[i].x, particles[i].y);
@@ -343,7 +344,7 @@ function initHeroBlob() {
         mouseX, mouseY, 0,
         mouseX, mouseY, 80
       );
-      gradient.addColorStop(0, 'rgba(255, 107, 53, 0.3)');
+      gradient.addColorStop(0, 'rgba(139, 92, 246, 0.3)');
       gradient.addColorStop(1, 'transparent');
       
       ctx.beginPath();
@@ -353,7 +354,7 @@ function initHeroBlob() {
       
       // Mouse pulse
       const pulseSize = Math.sin(Date.now() * 0.01) * 20 + 40;
-      ctx.strokeStyle = 'rgba(255, 107, 53, 0.5)';
+      ctx.strokeStyle = 'rgba(139, 92, 246, 0.5)';
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.arc(mouseX, mouseY, pulseSize, 0, Math.PI * 2);
@@ -405,7 +406,7 @@ function initHeroBlob() {
       particle.vx = Math.cos(angle) * speed;
       particle.vy = Math.sin(angle) * speed;
       particle.size = Math.random() * 6 + 4;
-      particle.color = `hsl(${Math.random() * 60 + 120}, 90%, 70%)`; // Green to orange range
+      particle.color = `hsl(${Math.random() * 80 + 240}, 90%, 70%)`; // Blue to purple range
       particle.maxTrailLength = 15;
       particles.push(particle);
     }
@@ -1396,8 +1397,13 @@ function initMatrixRain() {
     ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
     ctx.fillRect(0, 0, width, height);
     
+    // Get current accent color from CSS variables
+    const currentAccentColor = getComputedStyle(document.documentElement)
+      .getPropertyValue('--color-accent')
+      .trim();
+    
     // Set text properties
-    ctx.fillStyle = '#00ff88';
+    ctx.fillStyle = currentAccentColor;
     ctx.font = `bold ${fontSize}px monospace`;
     
     // Draw the characters
@@ -1406,7 +1412,7 @@ function initMatrixRain() {
       const char = matrixChars[Math.floor(Math.random() * matrixChars.length)];
       
       // Add glow effect
-      ctx.shadowColor = '#00ff88';
+      ctx.shadowColor = currentAccentColor;
       ctx.shadowBlur = 8;
       
       // Draw character
@@ -1493,4 +1499,279 @@ function initSkillsOrbit() {
     requestAnimationFrame(animateOrbit);
   }
   animateOrbit();
+}
+
+// ===== LIVE COLOR PLAYGROUND =====
+function initColorPlayground() {
+  const colorPickers = {
+    primary: document.getElementById('primary-color'),
+    secondary: document.getElementById('secondary-color'),
+    accent: document.getElementById('accent-color'),
+    background: document.getElementById('background-color')
+  };
+  
+  const colorValues = document.querySelectorAll('.color-value');
+  const randomizeBtn = document.getElementById('randomize-btn');
+  const resetBtn = document.getElementById('reset-btn');
+  const exportBtn = document.getElementById('export-btn');
+  const exportModal = document.getElementById('export-modal');
+  const closeExport = document.getElementById('close-export');
+  const exportCode = document.getElementById('export-code');
+  const copyCode = document.getElementById('copy-code');
+  const themeToggle = document.getElementById('theme-mode-toggle');
+  
+  // Original website colors (blue & purple theme)
+  const originalColors = {
+    primary: '#6366f1',
+    secondary: '#8b5cf6', 
+    accent: '#a855f7',
+    background: '#0a0a0a'
+  };
+  
+  // Dynamic color generation functions
+  function generateRandomHue() {
+    return Math.floor(Math.random() * 360);
+  }
+  
+  function generateHarmoniousColors() {
+    const baseHue = generateRandomHue();
+    const saturation = Math.floor(Math.random() * 40) + 60; // 60-100%
+    const lightness = Math.floor(Math.random() * 30) + 50; // 50-80%
+    
+    // Generate 3 harmonious colors using color theory
+    const primary = `hsl(${baseHue}, ${saturation}%, ${lightness}%)`;
+    const secondary = `hsl(${(baseHue + 30) % 360}, ${saturation}%, ${lightness}%)`;
+    const accent = `hsl(${(baseHue + 60) % 360}, ${saturation}%, ${lightness}%)`;
+    
+    return { primary, secondary, accent, background: '#0a0a0a' };
+  }
+  
+  function generateAnalogousColors() {
+    const baseHue = generateRandomHue();
+    const saturation = Math.floor(Math.random() * 30) + 70;
+    const lightness = Math.floor(Math.random() * 25) + 55;
+    
+    const primary = `hsl(${baseHue}, ${saturation}%, ${lightness}%)`;
+    const secondary = `hsl(${(baseHue + 20) % 360}, ${saturation}%, ${lightness}%)`;
+    const accent = `hsl(${(baseHue + 40) % 360}, ${saturation}%, ${lightness}%)`;
+    
+    return { primary, secondary, accent, background: '#0a0a0a' };
+  }
+  
+  function generateTriadicColors() {
+    const baseHue = generateRandomHue();
+    const saturation = Math.floor(Math.random() * 35) + 65;
+    const lightness = Math.floor(Math.random() * 30) + 50;
+    
+    const primary = `hsl(${baseHue}, ${saturation}%, ${lightness}%)`;
+    const secondary = `hsl(${(baseHue + 120) % 360}, ${saturation}%, ${lightness}%)`;
+    const accent = `hsl(${(baseHue + 240) % 360}, ${saturation}%, ${lightness}%)`;
+    
+    return { primary, secondary, accent, background: '#0a0a0a' };
+  }
+  
+  function generateComplementaryColors() {
+    const baseHue = generateRandomHue();
+    const saturation = Math.floor(Math.random() * 40) + 60;
+    const lightness = Math.floor(Math.random() * 30) + 50;
+    
+    const primary = `hsl(${baseHue}, ${saturation}%, ${lightness}%)`;
+    const secondary = `hsl(${(baseHue + 180) % 360}, ${saturation}%, ${lightness}%)`;
+    const accent = `hsl(${(baseHue + 90) % 360}, ${saturation}%, ${lightness}%)`;
+    
+    return { primary, secondary, accent, background: '#0a0a0a' };
+  }
+  
+  function generateMonochromaticColors() {
+    const hue = generateRandomHue();
+    const saturation = Math.floor(Math.random() * 40) + 60;
+    
+    const primary = `hsl(${hue}, ${saturation}%, 60%)`;
+    const secondary = `hsl(${hue}, ${saturation}%, 50%)`;
+    const accent = `hsl(${hue}, ${saturation}%, 70%)`;
+    
+    return { primary, secondary, accent, background: '#0a0a0a' };
+  }
+  
+  function generateSplitComplementaryColors() {
+    const baseHue = generateRandomHue();
+    const saturation = Math.floor(Math.random() * 35) + 65;
+    const lightness = Math.floor(Math.random() * 30) + 50;
+    
+    const primary = `hsl(${baseHue}, ${saturation}%, ${lightness}%)`;
+    const secondary = `hsl(${(baseHue + 150) % 360}, ${saturation}%, ${lightness}%)`;
+    const accent = `hsl(${(baseHue + 210) % 360}, ${saturation}%, ${lightness}%)`;
+    
+    return { primary, secondary, accent, background: '#0a0a0a' };
+  }
+  
+  // Color generation strategies
+  const colorStrategies = [
+    generateHarmoniousColors,
+    generateAnalogousColors,
+    generateTriadicColors,
+    generateComplementaryColors,
+    generateMonochromaticColors,
+    generateSplitComplementaryColors
+  ];
+  
+  // Convert HSL to hex for color picker compatibility
+  function hslToHex(h, s, l) {
+    l /= 100;
+    const a = s * Math.min(l, 1 - l) / 100;
+    const f = n => {
+      const k = (n + h / 30) % 12;
+      const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+      return Math.round(255 * color).toString(16).padStart(2, '0');
+    };
+    return `#${f(0)}${f(8)}${f(4)}`;
+  }
+  
+  function parseHsl(hslString) {
+    const match = hslString.match(/hsl\((\d+),\s*(\d+)%,\s*(\d+)%\)/);
+    if (match) {
+      const h = parseInt(match[1]);
+      const s = parseInt(match[2]);
+      const l = parseInt(match[3]);
+      return hslToHex(h, s, l);
+    }
+    return hslString;
+  }
+  
+  // Update CSS variables
+  function updateColors() {
+    const primary = colorPickers.primary.value;
+    const secondary = colorPickers.secondary.value;
+    const accent = colorPickers.accent.value;
+    const background = colorPickers.background.value;
+    
+    // Update CSS variables
+    document.documentElement.style.setProperty('--color-accent', primary);
+    document.documentElement.style.setProperty('--color-accent-secondary', secondary);
+    document.documentElement.style.setProperty('--color-glow', `${primary}30`);
+    document.documentElement.style.setProperty('--color-bg', background);
+    
+    // Update color value displays
+    colorValues[0].textContent = primary;
+    colorValues[1].textContent = secondary;
+    colorValues[2].textContent = accent;
+    colorValues[3].textContent = background;
+  }
+  
+  // Initialize colors
+  updateColors();
+  
+  // Color picker event listeners
+  Object.values(colorPickers).forEach(picker => {
+    picker.addEventListener('input', updateColors);
+  });
+  
+  // Randomize palette
+  randomizeBtn.addEventListener('click', () => {
+    const randomStrategy = colorStrategies[Math.floor(Math.random() * colorStrategies.length)];
+    const randomPalette = randomStrategy();
+    
+    // Convert HSL to hex for color pickers
+    const primaryHex = parseHsl(randomPalette.primary);
+    const secondaryHex = parseHsl(randomPalette.secondary);
+    const accentHex = parseHsl(randomPalette.accent);
+    
+    colorPickers.primary.value = primaryHex;
+    colorPickers.secondary.value = secondaryHex;
+    colorPickers.accent.value = accentHex;
+    colorPickers.background.value = randomPalette.background;
+    
+    updateColors();
+    
+    // Add animation effect
+    randomizeBtn.style.transform = 'scale(0.95)';
+    setTimeout(() => {
+      randomizeBtn.style.transform = 'scale(1)';
+    }, 150);
+    
+    console.log('Generated new color palette using:', randomStrategy.name);
+  });
+  
+  // Reset to original colors
+  resetBtn.addEventListener('click', () => {
+    colorPickers.primary.value = originalColors.primary;
+    colorPickers.secondary.value = originalColors.secondary;
+    colorPickers.accent.value = originalColors.accent;
+    colorPickers.background.value = originalColors.background;
+    updateColors();
+    console.log('Colors reset to original website theme.');
+  });
+  
+  // Export theme
+  exportBtn.addEventListener('click', () => {
+    const primary = colorPickers.primary.value;
+    const secondary = colorPickers.secondary.value;
+    const accent = colorPickers.accent.value;
+    const background = colorPickers.background.value;
+    
+    const cssCode = `/* Generated Color Theme */
+:root {
+  --color-accent: ${primary};
+  --color-accent-secondary: ${secondary};
+  --color-glow: ${primary}30;
+  --color-bg: ${background};
+}
+
+/* For light mode */
+body.light {
+  --color-accent: ${primary};
+  --color-accent-secondary: ${secondary};
+  --color-glow: ${primary}30;
+  --color-bg: #ffffff;
+}`;
+    
+    exportCode.textContent = cssCode;
+    exportModal.classList.add('show');
+  });
+  
+  // Close export modal
+  closeExport.addEventListener('click', () => {
+    exportModal.classList.remove('show');
+  });
+  
+  // Close modal on outside click
+  exportModal.addEventListener('click', (e) => {
+    if (e.target === exportModal) {
+      exportModal.classList.remove('show');
+    }
+  });
+  
+  // Copy code
+  copyCode.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(exportCode.textContent);
+      copyCode.querySelector('.btn-text').textContent = 'Copied!';
+      setTimeout(() => {
+        copyCode.querySelector('.btn-text').textContent = 'Copy Code';
+      }, 2000);
+    } catch (err) {
+      console.error('Failed to copy: ', err);
+    }
+  });
+  
+  // Theme toggle
+  themeToggle.addEventListener('change', () => {
+    const isLight = themeToggle.checked;
+    const toggleText = themeToggle.parentElement.querySelector('.toggle-text');
+    
+    if (isLight) {
+      document.body.classList.add('light');
+      toggleText.textContent = 'Dark Mode';
+    } else {
+      document.body.classList.remove('light');
+      toggleText.textContent = 'Light Mode';
+    }
+  });
+  
+  // Close modal on Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && exportModal.classList.contains('show')) {
+      exportModal.classList.remove('show');
+    }
+  });
 }
