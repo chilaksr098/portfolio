@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Futuristic Portfolio</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+</head>
+<body>
+  <!-- Animated Background -->
+  <div class="animated-background">
+    <canvas id="matrix-rain" class="matrix-rain"></canvas>
+    <div class="floating-particles"></div>
+    <div class="grid-overlay"></div>
+  </div>
+
+  <!-- Custom Cursor Elements -->
+  <div id="custom-cursor-core"></div>
+  <div id="custom-cursor-ring"></div>
+  <div id="custom-cursor-trail"></div>
+
+  <!-- Navigation -->
+  <nav class="navbar glassmorphism" id="navbar">
+    <div class="navbar-container">
+      <div class="navbar-logo">
+        <span class="logo-text">Sasidhar Chilaka</span>
+        <div class="logo-glow"></div>
+      </div>
+      <button class="theme-toggle glassmorphism" id="theme-toggle" aria-label="Toggle theme">
+        <span id="theme-icon" class="theme-icon"></span>
+      </button>
+      <button class="navbar-toggle" id="navbar-toggle" aria-label="Toggle navigation">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </button>
+      <ul class="navbar-links" id="navbar-links">
+        <li><a href="#about" class="nav-link">About</a></li>
+        <li><a href="#projects" class="nav-link">Projects</a></li>
+        <li><a href="#contact" class="nav-link">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <main class="hero-section" id="home">
+    <div class="hero-content">
+      <div class="hero-left">
+        <h1 class="hero-title">
+          <span class="title-line">Hi, I'm</span>
+          <span class="title-highlight">Sasidhar Chilaka</span>
+        </h1>
+        <div class="hero-subtitle">
+          <span class="typing-text" id="typing-text"></span>
+          <span class="typing-cursor">|</span>
+        </div>
+        <div class="hero-description">
+          a frontend developer who loves turning ideas into smooth, interactive web experiences. I specialize in building clean, responsive interfaces using JavaScript, React, and thoughtful design. Currently studying Information Technology at the University of Cincinnati, I'm focused on growing my skills and creating meaningful digital products.
+        </div>
+        <div class="hero-cta">
+          <button class="btn primary-btn magnetic" onclick="document.getElementById('projects').scrollIntoView({behavior: 'smooth'})">
+            <span class="btn-text">Explore Work</span>
+            <div class="btn-glow"></div>
+          </button>
+          <button class="btn secondary-btn magnetic" onclick="document.getElementById('about').scrollIntoView({behavior: 'smooth'})">
+            <span class="btn-text">Learn More</span>
+            <div class="btn-glow"></div>
+          </button>
+        </div>
+      </div>
+      <div class="hero-right">
+        <canvas id="hero-blob-canvas" width="500" height="500"></canvas>
+        <div class="floating-elements">
+          <div class="floating-card glassmorphism" data-speed="0.5"></div>
+          <div class="floating-card glassmorphism" data-speed="0.3"></div>
+          <div class="floating-card glassmorphism" data-speed="0.7"></div>
+        </div>
+      </div>
+    </div>
+    <div class="scroll-indicator">
+      <div class="scroll-line"></div>
+      <div class="scroll-arrow"></div>
+    </div>
+  </main>
+
+  <!-- About Section -->
+  <section id="about" class="about-section">
+    <div class="section-header">
+      <h2 class="section-title">About Me</h2>
+      <div class="section-subtitle">I'm a frontend web developer dedicated to turning ideas into elegant, functional, and creative solutions. I specialize in crafting seamless, intuitive user experiences that balance aesthetic appeal with real-world usability.
+
+My approach centers around building scalable, high-performing solutions that align with both user needs and business goals. By prioritizing performance, accessibility, and responsive design, I aim to create digital experiences that not only engage users but also deliver tangible, measurable results.</div>
+    </div>
+    <div class="about-container">
+      <div class="about-cards">
+        <div class="about-card glassmorphism magnetic" data-aos="fade-up" data-aos-delay="100">
+          <div class="card-icon">⚡</div>
+          <h3>Frontend-Focused Web Developer</h3>
+          <p>Building fast, responsive web apps using React, Node.js, and modern JavaScript.</p>
+          <div class="card-glow"></div>
+        </div>
+        <div class="about-card glassmorphism magnetic" data-aos="fade-up" data-aos-delay="200">
+          <div class="card-icon">🎨</div>
+          <h3>Interface Designer</h3>
+          <p>Designing clean, user-first interfaces with purpose, clarity, and accessibility.</p>
+          <div class="card-glow"></div>
+        </div>
+      </div>
+      <div class="about-profile glassmorphism">
+        <div class="profile-image">
+          <img src="https://via.placeholder.com/200" alt="Profile" />
+          <div class="profile-glow"></div>
+        </div>
+        <div class="profile-info">
+          <h3>Sasidhar Chilaka</h3>
+          <p>Frontend Developer & UI/UX Explorer</p>
+          <p class="profile-description">Passionate about building beautiful, high-performance web apps.</p>
+          <div class="skills-tags">
+            <span class="skill-tag">JavaScript</span>
+            <span class="skill-tag">React</span>
+            <span class="skill-tag">Node.js</span>
+            <span class="skill-tag">UI/UX</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Skills/Stack Section: Categorized, Static -->
+  <section id="skills" class="skills-section stack-section">
+    <div class="stack-container">
+      <div class="stack-header">
+        <span class="stack-title">✱ MY STACK</span>
+      </div>
+      <div class="stack-cards">
+        <!-- FRONTEND -->
+        <div class="stack-card glassmorphism" data-category="frontend" data-aos="fade-up" data-aos-once="false" data-aos-duration="800" data-aos-delay="0">
+          <div class="stack-card-title">Frontend</div>
+          <div class="stack-row">
+            <div class="stack-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JavaScript"/><span>JavaScript</span></div>
+            <div class="stack-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" alt="TypeScript"/><span>TypeScript</span></div>
+            <div class="stack-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" alt="React"/><span>React</span></div>
+            <div class="stack-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML"/><span>HTML</span></div>
+            <div class="stack-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt="CSS"/><span>CSS</span></div>
+            <div class="stack-item"><img src="https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/framermotion.svg" alt="Framer Motion"/><span>Framer Motion</span></div>
+            <div class="stack-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bootstrap/bootstrap-original.svg" alt="Bootstrap"/><span>Bootstrap</span></div>
+          </div>
+        </div>
+        <!-- BACKEND -->
+        <div class="stack-card glassmorphism" data-category="backend" data-aos="fade-up" data-aos-once="false" data-aos-duration="800" data-aos-delay="100">
+          <div class="stack-card-title">Backend</div>
+          <div class="stack-row">
+            <div class="stack-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" alt="Node.js"/><span>Node.js</span></div>
+            <div class="stack-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nestjs/nestjs-plain.svg" alt="Nest.js"/><span>Nest.js</span></div>
+            <div class="stack-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg" alt="Express.js"/><span>Express.js</span></div>
+          </div>
+        </div>
+        <!-- DATABASE -->
+        <div class="stack-card glassmorphism" data-category="database" data-aos="fade-up" data-aos-once="false" data-aos-duration="800" data-aos-delay="200">
+          <div class="stack-card-title">Database</div>
+          <div class="stack-row">
+            <div class="stack-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" alt="MySQL"/><span>MySQL</span></div>
+            <div class="stack-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg" alt="PostgreSQL"/><span>PostgreSQL</span></div>
+          </div>
+        </div>
+        <!-- TOOLS -->
+        <div class="stack-card glassmorphism" data-category="tools" data-aos="fade-up" data-aos-once="false" data-aos-duration="800" data-aos-delay="300">
+          <div class="stack-card-title">Tools</div>
+          <div class="stack-row">
+            <div class="stack-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" alt="Git"/><span>Git</span></div>
+            <div class="stack-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" alt="Docker"/><span>Docker</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects Section -->
+  <section id="projects" class="projects-section">
+    <div class="section-header">
+      <h2 class="section-title">Featured Projects</h2>
+      <div class="section-subtitle">Explore my latest work and creative solutions</div>
+    </div>
+    <div class="projects-gallery">
+      <div class="gallery-container">
+        <div class="project-card glassmorphism magnetic" data-aos="fade-up" data-aos-delay="0">
+          <div class="project-image">
+            <img src="https://via.placeholder.com/400x250" alt="Project 1" />
+            <div class="project-overlay">
+              <div class="project-links">
+                <a href="#" class="project-link">View Live</a>
+                <a href="#" class="project-link">Source Code</a>
+              </div>
+            </div>
+          </div>
+          <div class="project-content">
+            <h3>Portfolio Website</h3>
+            <p>A modern, interactive portfolio built with cutting-edge web technologies.</p>
+            <div class="project-tech">
+              <span class="tech-tag">React</span>
+              <span class="tech-tag">GSAP</span>
+              <span class="tech-tag">Canvas</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="project-card glassmorphism magnetic" data-aos="fade-up" data-aos-delay="100">
+          <div class="project-image">
+            <img src="https://via.placeholder.com/400x250" alt="Project 2" />
+            <div class="project-overlay">
+              <div class="project-links">
+                <a href="#" class="project-link">View Live</a>
+                <a href="#" class="project-link">Source Code</a>
+              </div>
+            </div>
+          </div>
+          <div class="project-content">
+            <h3>Task Manager App</h3>
+            <p>An intuitive task management application with drag-and-drop functionality.</p>
+            <div class="project-tech">
+              <span class="tech-tag">Vue.js</span>
+              <span class="tech-tag">Firebase</span>
+              <span class="tech-tag">PWA</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="project-card glassmorphism magnetic" data-aos="fade-up" data-aos-delay="200">
+          <div class="project-image">
+            <img src="https://via.placeholder.com/400x250" alt="Project 3" />
+            <div class="project-overlay">
+              <div class="project-links">
+                <a href="#" class="project-link">View Live</a>
+                <a href="#" class="project-link">Source Code</a>
+              </div>
+            </div>
+          </div>
+          <div class="project-content">
+            <h3>Weather Dashboard</h3>
+            <p>Real-time weather application with interactive charts and maps.</p>
+            <div class="project-tech">
+              <span class="tech-tag">Angular</span>
+              <span class="tech-tag">D3.js</span>
+              <span class="tech-tag">API</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="contact-section">
+    <div class="section-header">
+      <h2 class="section-title">Get In Touch</h2>
+      <div class="section-subtitle">Let's create something amazing together</div>
+    </div>
+    <div class="contact-container">
+      <div class="contact-form-container glassmorphism">
+        <form class="contact-form">
+          <div class="form-group">
+            <input type="text" name="name" placeholder="Your Name" required class="form-input" />
+            <div class="input-glow"></div>
+          </div>
+          <div class="form-group">
+            <input type="email" name="email" placeholder="Your Email" required class="form-input" />
+            <div class="input-glow"></div>
+          </div>
+          <div class="form-group">
+            <textarea name="message" placeholder="Your Message" rows="5" required class="form-input"></textarea>
+            <div class="input-glow"></div>
+          </div>
+          <button type="submit" class="btn primary-btn magnetic">
+            <span class="btn-text">Send Message</span>
+            <div class="btn-glow"></div>
+          </button>
+        </form>
+      </div>
+      <div class="contact-info glassmorphism">
+        <div class="contact-item magnetic">
+          <div class="contact-icon">📧</div>
+          <div class="contact-details">
+            <h4>Email</h4>
+            <p>hello@sasidhar.dev</p>
+          </div>
+        </div>
+        <div class="contact-item magnetic">
+          <div class="contact-icon">📍</div>
+          <div class="contact-details">
+            <h4>Location</h4>
+            <p>San Francisco, CA</p>
+          </div>
+        </div>
+        <div class="contact-item magnetic">
+          <div class="contact-icon">💼</div>
+          <div class="contact-details">
+            <h4>Available for</h4>
+            <p>Freelance & Full-time</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="social-links">
+      <a href="#" class="social-link magnetic" aria-label="GitHub">
+        <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M12 2C6.48 2 2 6.58 2 12.26c0 4.49 2.87 8.3 6.84 9.64.5.09.68-.22.68-.48 0-.24-.01-.87-.01-1.7-2.78.62-3.37-1.36-3.37-1.36-.45-1.18-1.1-1.5-1.1-1.5-.9-.63.07-.62.07-.62 1 .07 1.53 1.05 1.53 1.05.89 1.56 2.34 1.11 2.91.85.09-.66.35-1.11.63-1.37-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.7 0 0 .84-.28 2.75 1.05a9.18 9.18 0 0 1 2.5-.34c.85 0 1.7.11 2.5.34 1.91-1.33 2.75-1.05 2.75-1.05.55 1.4.2 2.44.1 2.7.64.72 1.03 1.63 1.03 2.75 0 3.94-2.34 4.81-4.57 5.07.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .27.18.58.69.48A10.01 10.01 0 0 0 22 12.26C22 6.58 17.52 2 12 2Z"/>
+        </svg>
+      </a>
+      <a href="#" class="social-link magnetic" aria-label="LinkedIn">
+        <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M19 0h-14c-2.76 0-5 2.24-5 5v14c0 2.76 2.24 5 5 5h14c2.76 0 5-2.24 5-5v-14c0-2.76-2.24-5-5-5zm-11 19h-3v-9h3v9zm-1.5-10.28c-.97 0-1.75-.79-1.75-1.75s.78-1.75 1.75-1.75 1.75.79 1.75 1.75-.78 1.75-1.75 1.75zm15.5 10.28h-3v-4.5c0-1.08-.02-2.47-1.5-2.47-1.5 0-1.73 1.17-1.73 2.39v4.58h-3v-9h2.89v1.23h.04c.4-.75 1.37-1.54 2.82-1.54 3.01 0 3.57 1.98 3.57 4.56v4.75z"/>
+        </svg>
+      </a>
+      <a href="#" class="social-link magnetic" aria-label="Twitter">
+        <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M22.46 5.92c-.8.36-1.66.6-2.56.71a4.48 4.48 0 0 0 1.97-2.48 8.93 8.93 0 0 1-2.83 1.09 4.48 4.48 0 0 0-7.64 4.08A12.7 12.7 0 0 1 3.1 4.86a4.48 4.48 0 0 0 1.39 5.98c-.73-.02-1.42-.22-2.02-.56v.06a4.48 4.48 0 0 0 3.6 4.39c-.34.09-.7.14-1.07.14-.26 0-.51-.03-.76-.07a4.48 4.48 0 0 0 4.18 3.12A8.98 8.98 0 0 1 2 19.54a12.67 12.67 0 0 0 6.88 2.02c8.26 0 12.78-6.84 12.78-12.78 0-.2 0-.41-.01-.61.88-.64 1.65-1.44 2.26-2.35Z"/>
+        </svg>
+      </a>
+    </div>
+  </section>
+
+  <script src="js/script.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+  <script>AOS.init({ once: true });</script>
+</body>
+</html>
