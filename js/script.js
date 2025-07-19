@@ -22,6 +22,20 @@ function initCustomCursor() {
   const cursorRing = document.getElementById('custom-cursor-ring');
   const cursorTrail = document.getElementById('custom-cursor-trail');
   
+  // Check if cursor elements exist
+  if (!cursorCore || !cursorRing || !cursorTrail) {
+    console.error('Custom cursor elements not found');
+    return;
+  }
+  
+  // Mark cursor as loaded
+  document.body.setAttribute('data-cursor-loaded', 'true');
+  
+  // Ensure cursor is visible
+  cursorCore.style.opacity = '1';
+  cursorRing.style.opacity = '1';
+  cursorTrail.style.opacity = '1';
+  
   let mouseX = 0, mouseY = 0;
   let cursorX = 0, cursorY = 0;
   let ringX = 0, ringY = 0;
@@ -33,9 +47,9 @@ function initCustomCursor() {
     mouseY = e.clientY;
   });
   
-  // Hide cursor on inputs
-  const inputs = document.querySelectorAll('input, textarea, button, a');
-  inputs.forEach(input => {
+  // Hide cursor only on form inputs (not buttons/links)
+  const formInputs = document.querySelectorAll('input[type="text"], input[type="email"], textarea');
+  formInputs.forEach(input => {
     input.addEventListener('mouseenter', () => {
       cursorCore.style.opacity = '0';
       cursorRing.style.opacity = '0';
@@ -49,7 +63,7 @@ function initCustomCursor() {
     });
   });
   
-  // Cursor animation loop
+  // Simple cursor animation loop
   function animateCursor() {
     // Smooth cursor core
     cursorX += (mouseX - cursorX) * 0.1;
@@ -64,31 +78,100 @@ function initCustomCursor() {
     trailY += (mouseY - trailY) * 0.02;
     
     // Apply transforms
-    cursorCore.style.transform = `translate(${cursorX - 4}px, ${cursorY - 4}px)`;
+    cursorCore.style.transform = `translate(${cursorX - 8}px, ${cursorY - 8}px)`;
     cursorRing.style.transform = `translate(${ringX - 20}px, ${ringY - 20}px)`;
-    cursorTrail.style.transform = `translate(${trailX - 2}px, ${trailY - 2}px)`;
+    cursorTrail.style.transform = `translate(${trailX - 4}px, ${trailY - 4}px)`;
     
     requestAnimationFrame(animateCursor);
   }
   
   animateCursor();
   
-  // Hover effects
+  // Simple hover effects
   document.addEventListener('mouseover', (e) => {
-    if (e.target.classList.contains('magnetic') || 
-        e.target.classList.contains('btn') || 
-        e.target.classList.contains('nav-link')) {
+    if (e.target.classList.contains('btn') || 
+        e.target.classList.contains('nav-link') ||
+        e.target.classList.contains('social-link') ||
+        e.target.classList.contains('magnetic') ||
+        e.target.classList.contains('about-card') ||
+        e.target.classList.contains('project-card') ||
+        e.target.classList.contains('contact-item') ||
+        e.target.classList.contains('project-link') ||
+        e.target.classList.contains('theme-toggle') ||
+        e.target.classList.contains('color-picker') ||
+        e.target.classList.contains('stack-card') ||
+        e.target.classList.contains('stack-item') ||
+        e.target.classList.contains('orbit-icon') ||
+        e.target.classList.contains('form-input') ||
+        e.target.classList.contains('preview-btn') ||
+        e.target.classList.contains('preview-link') ||
+        e.target.classList.contains('close-btn') ||
+        e.target.classList.contains('copy-btn') ||
+        e.target.classList.contains('toggle-slider') ||
+        e.target.tagName === 'BUTTON' ||
+        e.target.tagName === 'A') {
+      
+      // Add contrasting effect to prevent camouflage
+      const accentColor = getComputedStyle(document.documentElement)
+        .getPropertyValue('--color-accent')
+        .trim();
+      
+      // Create contrasting color (invert or use white)
+      const contrastingColor = '#ffffff'; // Always use white for maximum contrast
+      
       cursorRing.style.transform += ' scale(1.5)';
       cursorCore.style.transform += ' scale(1.2)';
+      
+      // Apply contrasting colors
+      cursorCore.style.background = contrastingColor;
+      cursorCore.style.border = `2px solid ${accentColor}`;
+      cursorCore.style.boxShadow = `0 0 20px ${contrastingColor}`;
+      cursorRing.style.borderColor = contrastingColor;
+      cursorRing.style.boxShadow = `0 0 20px ${contrastingColor}`;
+      cursorTrail.style.background = contrastingColor;
+      cursorTrail.style.boxShadow = `0 0 10px ${contrastingColor}`;
     }
   });
   
   document.addEventListener('mouseout', (e) => {
-    if (e.target.classList.contains('magnetic') || 
-        e.target.classList.contains('btn') || 
-        e.target.classList.contains('nav-link')) {
+    if (e.target.classList.contains('btn') || 
+        e.target.classList.contains('nav-link') ||
+        e.target.classList.contains('social-link') ||
+        e.target.classList.contains('magnetic') ||
+        e.target.classList.contains('about-card') ||
+        e.target.classList.contains('project-card') ||
+        e.target.classList.contains('contact-item') ||
+        e.target.classList.contains('project-link') ||
+        e.target.classList.contains('theme-toggle') ||
+        e.target.classList.contains('color-picker') ||
+        e.target.classList.contains('stack-card') ||
+        e.target.classList.contains('stack-item') ||
+        e.target.classList.contains('orbit-icon') ||
+        e.target.classList.contains('form-input') ||
+        e.target.classList.contains('preview-btn') ||
+        e.target.classList.contains('preview-link') ||
+        e.target.classList.contains('close-btn') ||
+        e.target.classList.contains('copy-btn') ||
+        e.target.classList.contains('toggle-slider') ||
+        e.target.tagName === 'BUTTON' ||
+        e.target.tagName === 'A') {
+      
+      // Reset to theme colors
+      const accentColor = getComputedStyle(document.documentElement)
+        .getPropertyValue('--color-accent')
+        .trim();
+      
       cursorRing.style.transform = cursorRing.style.transform.replace(' scale(1.5)', '');
       cursorCore.style.transform = cursorCore.style.transform.replace(' scale(1.2)', '');
+      
+      // Reset to original theme colors
+      cursorCore.style.background = accentColor;
+      cursorCore.style.border = '2px solid #ffffff';
+      cursorCore.style.boxShadow = `0 0 20px ${accentColor}`;
+      cursorRing.style.borderColor = accentColor;
+      cursorRing.style.boxShadow = `0 0 20px ${accentColor}`;
+      cursorTrail.style.background = accentColor;
+      cursorTrail.style.boxShadow = `0 0 10px ${accentColor}`;
     }
   });
 }
@@ -748,6 +831,9 @@ function initThemeToggle() {
       updateThemeIcon(true);
     }
     
+    // Update cursor colors when theme changes
+    updateCursorColors();
+    
     // Add click animation
     themeToggle.style.transform = 'scale(0.9)';
     setTimeout(() => {
@@ -773,6 +859,26 @@ function initThemeToggle() {
   themeToggle.addEventListener('mouseleave', () => {
     themeToggle.style.transform = 'scale(1)';
   });
+}
+
+// Function to update cursor colors based on current theme
+function updateCursorColors() {
+  const cursorCore = document.getElementById('custom-cursor-core');
+  const cursorRing = document.getElementById('custom-cursor-ring');
+  const cursorTrail = document.getElementById('custom-cursor-trail');
+  
+  if (cursorCore && cursorRing && cursorTrail) {
+    const accentColor = getComputedStyle(document.documentElement)
+      .getPropertyValue('--color-accent')
+      .trim();
+    
+    cursorCore.style.background = accentColor;
+    cursorCore.style.boxShadow = `0 0 20px ${accentColor}`;
+    cursorRing.style.borderColor = accentColor;
+    cursorRing.style.boxShadow = `0 0 20px ${accentColor}`;
+    cursorTrail.style.background = accentColor;
+    cursorTrail.style.boxShadow = `0 0 10px ${accentColor}`;
+  }
 }
 
 // ===== FLOATING ELEMENTS =====
@@ -1518,6 +1624,8 @@ function initColorPlayground() {
   const closeExport = document.getElementById('close-export');
   const exportCode = document.getElementById('export-code');
   const copyCode = document.getElementById('copy-code');
+  const applyThemeBtn = document.getElementById('apply-theme-btn');
+  const cancelApplyBtn = document.getElementById('cancel-apply-btn');
   const themeToggle = document.getElementById('theme-mode-toggle');
   
   // Original website colors (blue & purple theme)
@@ -1527,6 +1635,10 @@ function initColorPlayground() {
     accent: '#a855f7',
     background: '#0a0a0a'
   };
+  
+  // Store original colors for potential reset
+  let originalThemeApplied = true;
+  let appliedColors = { ...originalColors };
   
   // Dynamic color generation functions
   function generateRandomHue() {
@@ -1543,7 +1655,10 @@ function initColorPlayground() {
     const secondary = `hsl(${(baseHue + 30) % 360}, ${saturation}%, ${lightness}%)`;
     const accent = `hsl(${(baseHue + 60) % 360}, ${saturation}%, ${lightness}%)`;
     
-    return { primary, secondary, accent, background: '#0a0a0a' };
+    // Smart background selection based on accent color
+    const background = generateSmartBackground(baseHue, saturation, lightness);
+    
+    return { primary, secondary, accent, background };
   }
   
   function generateAnalogousColors() {
@@ -1555,7 +1670,9 @@ function initColorPlayground() {
     const secondary = `hsl(${(baseHue + 20) % 360}, ${saturation}%, ${lightness}%)`;
     const accent = `hsl(${(baseHue + 40) % 360}, ${saturation}%, ${lightness}%)`;
     
-    return { primary, secondary, accent, background: '#0a0a0a' };
+    const background = generateSmartBackground(baseHue, saturation, lightness);
+    
+    return { primary, secondary, accent, background };
   }
   
   function generateTriadicColors() {
@@ -1567,7 +1684,9 @@ function initColorPlayground() {
     const secondary = `hsl(${(baseHue + 120) % 360}, ${saturation}%, ${lightness}%)`;
     const accent = `hsl(${(baseHue + 240) % 360}, ${saturation}%, ${lightness}%)`;
     
-    return { primary, secondary, accent, background: '#0a0a0a' };
+    const background = generateSmartBackground(baseHue, saturation, lightness);
+    
+    return { primary, secondary, accent, background };
   }
   
   function generateComplementaryColors() {
@@ -1579,7 +1698,9 @@ function initColorPlayground() {
     const secondary = `hsl(${(baseHue + 180) % 360}, ${saturation}%, ${lightness}%)`;
     const accent = `hsl(${(baseHue + 90) % 360}, ${saturation}%, ${lightness}%)`;
     
-    return { primary, secondary, accent, background: '#0a0a0a' };
+    const background = generateSmartBackground(baseHue, saturation, lightness);
+    
+    return { primary, secondary, accent, background };
   }
   
   function generateMonochromaticColors() {
@@ -1590,7 +1711,9 @@ function initColorPlayground() {
     const secondary = `hsl(${hue}, ${saturation}%, 50%)`;
     const accent = `hsl(${hue}, ${saturation}%, 70%)`;
     
-    return { primary, secondary, accent, background: '#0a0a0a' };
+    const background = generateSmartBackground(hue, saturation, 60);
+    
+    return { primary, secondary, accent, background };
   }
   
   function generateSplitComplementaryColors() {
@@ -1602,7 +1725,24 @@ function initColorPlayground() {
     const secondary = `hsl(${(baseHue + 150) % 360}, ${saturation}%, ${lightness}%)`;
     const accent = `hsl(${(baseHue + 210) % 360}, ${saturation}%, ${lightness}%)`;
     
-    return { primary, secondary, accent, background: '#0a0a0a' };
+    const background = generateSmartBackground(baseHue, saturation, lightness);
+    
+    return { primary, secondary, accent, background };
+  }
+  
+  // Smart background generation function
+  function generateSmartBackground(hue, saturation, lightness) {
+    // Determine if we should use a dark or light background based on accent color
+    const isLightAccent = lightness > 60;
+    
+    if (isLightAccent) {
+      // For light accent colors, use a dark background for contrast
+      return '#0a0a0a'; // Keep consistent dark background
+    } else {
+      // For dark accent colors, use a slightly varied dark background
+      const backgroundLightness = Math.max(3, Math.min(8, lightness * 0.1));
+      return `hsl(${hue}, ${Math.min(20, saturation * 0.3)}%, ${backgroundLightness}%)`;
+    }
   }
   
   // Color generation strategies
@@ -1698,11 +1838,28 @@ function initColorPlayground() {
     colorPickers.secondary.value = originalColors.secondary;
     colorPickers.accent.value = originalColors.accent;
     colorPickers.background.value = originalColors.background;
+    
+    // Also reset any applied theme back to original (both modes)
+    document.documentElement.style.setProperty('--color-accent', originalColors.primary);
+    document.documentElement.style.setProperty('--color-accent-secondary', originalColors.secondary);
+    document.documentElement.style.setProperty('--color-glow', `${originalColors.primary}30`);
+    
+    // Handle background based on current mode
+    const isLightMode = document.body.classList.contains('light');
+    if (isLightMode) {
+      document.documentElement.style.setProperty('--color-bg', '#ffffff');
+    } else {
+      document.documentElement.style.setProperty('--color-bg', originalColors.background);
+    }
+    
     updateColors();
-    console.log('Colors reset to original website theme.');
+    originalThemeApplied = true;
+    appliedColors = { ...originalColors };
+    
+    console.log('Colors reset to original website theme');
   });
   
-  // Export theme
+  // Apply theme functionality
   exportBtn.addEventListener('click', () => {
     const primary = colorPickers.primary.value;
     const secondary = colorPickers.secondary.value;
@@ -1741,6 +1898,49 @@ body.light {
     }
   });
   
+  // Apply theme button
+  applyThemeBtn.addEventListener('click', () => {
+    const primary = colorPickers.primary.value;
+    const secondary = colorPickers.secondary.value;
+    const accent = colorPickers.accent.value;
+    const background = colorPickers.background.value;
+    
+    // Apply the theme to the entire website (both dark and light modes)
+    document.documentElement.style.setProperty('--color-accent', primary);
+    document.documentElement.style.setProperty('--color-accent-secondary', secondary);
+    document.documentElement.style.setProperty('--color-glow', `${primary}30`);
+    document.documentElement.style.setProperty('--color-bg', background);
+    
+    // Also update light mode variables if light mode is active
+    const isLightMode = document.body.classList.contains('light');
+    if (isLightMode) {
+      // For light mode, we need to ensure the background stays light but accent colors change
+      document.documentElement.style.setProperty('--color-bg', '#ffffff');
+      // The accent colors will be inherited from the root variables
+    }
+    
+    // Update cursor colors to match new theme
+    updateCursorColors();
+    
+    // Store the applied colors
+    appliedColors = { primary, secondary, accent, background };
+    originalThemeApplied = false;
+    
+    // Show success message
+    applyThemeBtn.querySelector('.btn-text').textContent = '✅ Applied!';
+    setTimeout(() => {
+      applyThemeBtn.querySelector('.btn-text').textContent = '✅ Apply Theme';
+      exportModal.classList.remove('show');
+    }, 1500);
+    
+    console.log('Theme applied to website:', appliedColors);
+  });
+  
+  // Cancel apply button
+  cancelApplyBtn.addEventListener('click', () => {
+    exportModal.classList.remove('show');
+  });
+  
   // Copy code
   copyCode.addEventListener('click', async () => {
     try {
@@ -1762,9 +1962,20 @@ body.light {
     if (isLight) {
       document.body.classList.add('light');
       toggleText.textContent = 'Dark Mode';
+      
+      // If a custom theme has been applied, ensure it works in light mode
+      if (!originalThemeApplied) {
+        // Keep the accent colors but ensure background is light
+        document.documentElement.style.setProperty('--color-bg', '#ffffff');
+      }
     } else {
       document.body.classList.remove('light');
       toggleText.textContent = 'Light Mode';
+      
+      // If a custom theme has been applied, restore the dark background
+      if (!originalThemeApplied) {
+        document.documentElement.style.setProperty('--color-bg', appliedColors.background);
+      }
     }
   });
   

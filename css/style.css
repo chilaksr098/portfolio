@@ -24,9 +24,9 @@
   --container-max-width: 1200px;
   
   /* Animations */
-  --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-fast: 0.1s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-smooth: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Light Mode Theme */
@@ -69,23 +69,42 @@ body {
   transition: background-color var(--transition-smooth), color var(--transition-smooth);
 }
 
-/* Custom Cursor System */
+/* Fallback cursor - ensure there's always a visible cursor */
+body {
+  cursor: none;
+}
+
+/* If custom cursor fails, show a simple one */
+body:not([data-cursor-loaded]) {
+  cursor: crosshair;
+}
+
+/* Ensure cursor elements are always visible */
+#custom-cursor-core,
+#custom-cursor-ring,
+#custom-cursor-trail {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* Custom Cursor System - Simplified and Guaranteed Visible */
 #custom-cursor-core,
 #custom-cursor-ring,
 #custom-cursor-trail {
   position: fixed;
   pointer-events: none;
-  z-index: 9999;
-  mix-blend-mode: difference;
-  transition: opacity var(--transition-fast);
+  z-index: 999999;
+  transition: all 0.12s ease-out;
 }
 
 #custom-cursor-core {
-  width: 8px;
-  height: 8px;
+  width: 16px;
+  height: 16px;
   background: var(--color-accent);
   border-radius: 50%;
-  box-shadow: 0 0 20px var(--color-glow);
+  border: 2px solid #ffffff;
+  box-shadow: 0 0 20px var(--color-accent);
+  animation: cursorPulse 2s ease-in-out infinite;
 }
 
 #custom-cursor-ring {
@@ -93,15 +112,77 @@ body {
   height: 40px;
   border: 2px solid var(--color-accent);
   border-radius: 50%;
-  box-shadow: 0 0 30px var(--color-glow);
+  box-shadow: 0 0 20px var(--color-accent);
 }
 
 #custom-cursor-trail {
-  width: 4px;
-  height: 4px;
+  width: 8px;
+  height: 8px;
   background: var(--color-accent);
   border-radius: 50%;
   opacity: 0.6;
+  box-shadow: 0 0 10px var(--color-accent);
+}
+
+/* Cursor Animations */
+@keyframes cursorPulse {
+  0%, 100% { 
+    transform: scale(1);
+    box-shadow: 
+      0 0 20px var(--color-glow),
+      0 0 40px var(--color-accent),
+      inset 0 0 8px rgba(255, 255, 255, 0.3);
+  }
+  50% { 
+    transform: scale(1.1);
+    box-shadow: 
+      0 0 30px var(--color-glow),
+      0 0 60px var(--color-accent),
+      inset 0 0 12px rgba(255, 255, 255, 0.5);
+  }
+}
+
+@keyframes cursorRotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes cursorTrail {
+  0% { 
+    opacity: 0.8;
+    transform: scale(1);
+  }
+  100% { 
+    opacity: 0;
+    transform: scale(0.5);
+  }
+}
+
+/* Remove default cursors from interactive elements */
+.btn,
+.nav-link,
+.social-link,
+.contact-item,
+.project-link,
+.about-card,
+.project-card,
+.theme-toggle,
+.color-picker,
+.close-btn,
+.apply-theme-btn,
+.cancel-apply-btn,
+.copy-btn,
+.randomize-btn,
+.reset-btn,
+.export-btn {
+  cursor: none !important;
+}
+
+/* Keep default cursor only for form inputs */
+input[type="text"],
+input[type="email"],
+textarea {
+  cursor: text;
 }
 
 /* Animated Background */
@@ -214,7 +295,7 @@ body {
   color: var(--color-text);
   text-decoration: none;
   font-weight: 500;
-  transition: all var(--transition-fast);
+  transition: all 0.1s ease-out;
   position: relative;
 }
 
@@ -312,12 +393,27 @@ body {
 .primary-btn {
   background: linear-gradient(135deg, var(--color-accent), var(--color-accent-secondary));
   color: var(--color-bg);
+  transition: all 0.12s ease-out;
+}
+
+.primary-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px var(--color-glow);
+  filter: brightness(1.1);
 }
 
 .secondary-btn {
   background: transparent;
   color: var(--color-text);
   border: 2px solid var(--color-accent);
+  transition: all 0.12s ease-out;
+}
+
+.secondary-btn:hover {
+  background: var(--color-accent);
+  color: var(--color-bg);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px var(--color-glow);
 }
 
 .btn-glow {
@@ -326,50 +422,51 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: inherit;
+  background: var(--color-accent);
   filter: blur(20px);
   opacity: 0;
-  transition: opacity var(--transition-fast);
+  transition: opacity 0.08s ease-out;
+  border-radius: 50px;
 }
 
 .btn:hover .btn-glow {
-  opacity: 0.5;
+  opacity: 0.6;
 }
 
 /* Magnetic Effect - Enhanced */
 .magnetic {
-  transition: transform var(--transition-smooth), box-shadow var(--transition-smooth);
+  transition: transform 0.12s ease-out, box-shadow 0.12s ease-out;
   will-change: transform;
 }
 
 .magnetic:hover {
   transform: scale(1.05);
-  box-shadow: 0 8px 32px rgba(0, 255, 136, 0.2);
+  box-shadow: 0 8px 32px var(--color-glow);
 }
 
 /* Enhanced button hover effects */
 .btn.magnetic:hover {
   transform: scale(1.05) translateY(-2px);
-  box-shadow: 0 12px 40px rgba(0, 255, 136, 0.3);
+  box-shadow: 0 12px 40px var(--color-glow);
 }
 
 /* Enhanced card hover effects */
 .about-card.magnetic:hover,
 .project-card.magnetic:hover {
   transform: translateY(-10px) scale(1.02);
-  box-shadow: 0 20px 60px rgba(0, 255, 136, 0.15);
+  box-shadow: 0 20px 60px var(--color-glow);
 }
 
 /* Enhanced social link hover effects */
 .social-link.magnetic:hover {
   transform: translateY(-5px) scale(1.1);
-  box-shadow: 0 8px 24px rgba(0, 255, 136, 0.3);
+  box-shadow: 0 8px 24px var(--color-glow);
 }
 
 /* Enhanced contact item hover effects */
 .contact-item.magnetic:hover {
   transform: translateX(5px) scale(1.02);
-  box-shadow: 0 8px 24px rgba(0, 255, 136, 0.15);
+  box-shadow: 0 8px 24px var(--color-glow);
 }
 
 /* Enhanced form input focus effects */
@@ -378,12 +475,14 @@ body {
   border-color: var(--color-accent);
   box-shadow: 0 0 0 3px var(--color-glow);
   transform: scale(1.02);
+  background: var(--color-surface-hover);
 }
 
 /* Enhanced nav link hover effects */
 .nav-link:hover {
   color: var(--color-accent);
   transform: translateY(-2px);
+  text-shadow: 0 2px 8px var(--color-glow);
 }
 
 /* Hero Right Side */
@@ -783,21 +882,22 @@ body {
 
 .form-input {
   width: 100%;
-  padding: 1rem 1.25rem;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid var(--color-border);
-  border-radius: 0.75rem;
+  padding: 1rem 1.5rem;
+  background: var(--glass-bg);
+  border: 2px solid var(--glass-border);
+  border-radius: 12px;
   color: var(--color-text);
   font-size: 1rem;
-  transition: all var(--transition-smooth);
-  resize: vertical;
+  transition: all 0.1s ease-out;
+  backdrop-filter: var(--glass-blur);
 }
 
 .form-input:focus {
   outline: none;
   border-color: var(--color-accent);
-  box-shadow: 0 0 20px var(--color-glow);
-  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 0 3px var(--color-glow);
+  transform: scale(1.02);
+  background: var(--color-surface-hover);
 }
 
 .form-input::placeholder {
@@ -987,6 +1087,7 @@ body {
 .theme-toggle:hover {
   background: var(--color-surface-hover);
   transform: scale(1.1);
+  box-shadow: 0 4px 16px var(--color-glow);
 }
 
 .theme-icon {
@@ -1897,6 +1998,41 @@ html, body {
   gap: 1rem;
 }
 
+.theme-apply-message {
+  color: var(--color-text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 0.5rem;
+  border-left: 3px solid var(--color-accent);
+}
+
+.theme-apply-actions {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.theme-apply-actions .btn {
+  flex: 1;
+  min-width: 120px;
+}
+
+.export-code-section {
+  border-top: 1px solid var(--color-border);
+  padding-top: 1rem;
+}
+
+.export-code-section h4 {
+  color: var(--color-accent);
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
 .export-code {
   background: rgba(0, 0, 0, 0.3);
   border: 1px solid var(--color-border);
@@ -1910,6 +2046,7 @@ html, body {
   overflow-x: auto;
   max-height: 300px;
   overflow-y: auto;
+  margin-bottom: 1rem;
 }
 
 .copy-btn {
@@ -2007,4 +2144,24 @@ html, body {
   color: var(--color-text-secondary);
   font-size: 0.9rem;
   margin: 0;
+}
+
+/* Profile Placeholder */
+.profile-placeholder {
+  width: 150px;
+  height: 150px;
+  background: linear-gradient(135deg, var(--color-accent), var(--color-accent-secondary));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 30px var(--color-glow);
+  margin: 0 auto 2rem;
+}
+
+.profile-initial {
+  font-size: 3rem;
+  font-weight: bold;
+  color: white;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
